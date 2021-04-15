@@ -1,0 +1,39 @@
+# Perform clustering for the airlines data to obtain optimum number of clusters.
+# Draw the inferences from the clusters obtained.
+
+
+library(readr)
+airlines_data <- read.csv(file.choose())                    
+
+data <- airlines_data[ , -1]                               # removing the ID column  
+
+str(data)
+summary(data)
+
+normalized_data <- scale(data)                             # to remove the scale effect from the dataset
+
+distance <- dist(normalized_data, method = 'euclidean')    # calculating the euclidean distance
+distance
+
+fit_data <- hclust(distance, method = 'complete')          # creating the hierarchy
+
+plot(fit_data)                                             # viewing the dendrogram
+
+plot(fit_data, hang=-1)                                    # better view
+
+cluster<- cutree(fit_data, k=4)                            # defining the no. of clusters
+cluster
+
+rect.hclust(fit_data, k=4, border='blue')                  # viewing the segregated groups
+
+membership_id <- as.matrix(cluster)                        # converting the clusters into matrix format
+membership_id
+
+
+final_data <- data.frame(membership_id, data)              # merging the cluster id with the dataset
+
+aggregate(data, by = list(final_data$membership_id), FUN = mean)   # studying the cluster
+
+
+write_csv(final_data, "assignment_airlines_data.csv")       # saving the final data
+getwd()                                                     # obtaining the path where the data have been saved

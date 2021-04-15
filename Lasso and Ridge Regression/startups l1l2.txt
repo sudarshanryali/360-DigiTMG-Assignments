@@ -1,0 +1,53 @@
+# Importing Libraries
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Importing Dataset
+
+df=pd.read_csv("50_Startups.csv")
+df
+df.columns=['RD_Spend',"Administration",'Marketing_Spend','State','Profit']
+df
+# Performing Exploratory Data Analysis
+
+sns.heatmap(df.corr(),annot=True)
+
+# Splitting into Dependent and independent
+
+x=df.iloc[:,0:4]
+x
+y=df.iloc[:,4:5]
+y
+
+# Converting Alphabetical to numerical
+
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+x['State']=le.fit_transform(x['State'])
+x
+
+# Performing Train Test Split
+
+from sklearn.model_selection import train_test_split
+x_train,y_train,x_test,y_test=train_test_split(x,y,test_size=0.5,random_state=0)
+
+# Performing Linear Regression
+
+from sklearn.linear_model import LinearRegression
+mlr=LinearRegression()
+
+# Performing Lasso Regression
+
+from sklearn.linear_model import Lasso
+lasso_reg=Lasso(alpha=50,max_iter=100,tol=0.1)
+lasso_reg.fit(x_train,y_train)
+
+# Performing Ridge Regression
+
+from sklearn.linear_model import Ridge
+ridge_reg=Ridge(alpha=30,max_iter=100,tol=0.1)
+ridge_reg=Ridge(x_train,y_train)
+

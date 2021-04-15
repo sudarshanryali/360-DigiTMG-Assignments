@@ -1,0 +1,51 @@
+# Importing Libraries
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Importing Dataset
+
+df = pd.read_csv('ToyotaCorolla.csv', encoding= 'unicode_escape')
+df
+
+# Performing Exploratory Data Analysis
+
+sns.heatmap(df.corr(),annot=True)
+
+# Splitting into Dependent and independent
+
+x=df.drop(['Id','Price'],axis=1)
+x
+
+y=df[['Price']]
+y
+
+# Converting Alphabetical to numerical
+
+import sklearn
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+
+x['Fuel_Type']=le.fit_transform(x['Fuel_Type'])
+x['Color']=le.fit_transform(x['Color'])
+x['Model']=le.fit_transform(x['Model'])
+
+# Performing Linear Regression
+
+from sklearn.linear_model import LinearRegression
+lr=LinearRegression()
+
+# Performing Lasso Regression
+
+from sklearn.linear_model import Lasso
+lasso_reg=Lasso(alpha=50,max_iter=100,tol=0.1)
+lasso_reg.fit(x_train,y_train)
+
+# Performing Ridge Regression
+
+from sklearn.linear_model import Ridge
+ridge_reg=Ridge(alpha=30,max_iter=100,tol=0.1)
+ridge_reg=Ridge(x_train,y_train)
+

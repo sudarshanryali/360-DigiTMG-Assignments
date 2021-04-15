@@ -1,0 +1,36 @@
+## Perform Clustering for the crime data and identify the number of clusters formed and draw inferences.
+
+
+
+library(readr)
+crime_data <- read.csv(file.choose())
+
+data <- crime_data[ , -1]                                  # removing the non-numeric column
+
+normalized_data <- scale(data)                             # to remove the scale effect from the dataset
+
+distance <- dist(normalized_data, method = 'euclidean')    # calculating the euclidean distance
+distance
+
+fit_data <- hclust(distance, method = 'complete')          # creating the hierarchy
+
+plot(fit_data)                                             # viewing the dendrogram
+
+plot(fit_data, hang=-1)                                    # better view
+
+cluster<- cutree(fit_data, k=3)                            # defining the no. of clusters
+cluster
+
+rect.hclust(fit_data, k=3, border='blue')                  # viewing the segregated groups
+
+membership_id <- as.matrix(cluster)                        # converting the clusters into matrix format
+membership_id
+
+
+final_data <- data.frame(membership_id, data)              # merging the cluster id with the dataset
+
+aggregate(data, by = list(final_data$membership_id), FUN = mean)   # studying the cluster
+
+
+write_csv(final_data, "assignment_crime_data.csv")         # saving the final data 
+getwd()                                                    # obtaining the path where the data have been saved
